@@ -37,3 +37,11 @@ Route::get('/increment/{number}',function($number){
         return redirect('/');
     }
 });
+
+Route::get('/rolldice/{guess}',function($guess){
+    $number = mt_rand(1,6);
+    $data['number'] = $number;
+    $data['guess'] = $guess;
+
+    return view('roll-dice',$data);
+});
