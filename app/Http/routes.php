@@ -11,32 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@showWelcome');
 
-Route::get('/sayhello/{name?}',function($name = "World"){
+Route::get('/sayhello/{name}','HomeController@sayHello');
 
-    if ($name == "Chris") {
-        return redirect('/');
-    }
-    else {
-        return "Hello, $name";
-    }
-});
+Route::get('/uppercase/{word}','HomeController@uppercase');
 
-Route::get('/uppercase/{word}',function($word){
-    return strtoupper($word);
-});
-
-Route::get('/increment/{number}',function($number){
-    if (is_numeric($number)) {
-        return $number + 1;
-    }
-    else {
-        return redirect('/');
-    }
-});
+Route::get('/increment/{number}','HomeController@increment');
 
 Route::get('/rolldice/{guess}',function($guess){
     $number = mt_rand(1,6);
