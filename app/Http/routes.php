@@ -19,6 +19,8 @@ Route::get('/uppercase/{word}','HomeController@uppercase');
 
 Route::get('/increment/{number}','HomeController@increment');
 
+Route::resource('posts', 'PostsController');
+
 Route::get('/rolldice/{guess}',function($guess){
     $number = mt_rand(1,6);
     $data['number'] = $number;
