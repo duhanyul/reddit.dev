@@ -16,7 +16,8 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = \App\Models\Post::all();
+        $posts = \App\Models\Post::Paginate(3);
+
         $data['posts'] = $posts;
 
         return view('/posts/all',$data);
@@ -49,6 +50,8 @@ class PostsController extends Controller
         $this->validate($request,\App\Models\Post::$rules);
 
         $post->save();
+
+        dd($request);
 
 
         return redirect()->action('PostsController@index');
@@ -94,7 +97,7 @@ class PostsController extends Controller
     {
         $post = \App\Models\Post::find($id);
         $this->validate($request,\App\Models\Post::$rules);
-        
+
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
