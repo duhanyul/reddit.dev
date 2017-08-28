@@ -45,6 +45,9 @@ class PostsController extends Controller
         $post->url = $request->url;
         $post->content = $request->content;
         $post->created_by = 1;
+
+        $this->validate($request,\App\Models\Post::$rules);
+
         $post->save();
 
 
@@ -90,7 +93,8 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
         $post = \App\Models\Post::find($id);
-
+        $this->validate($request,\App\Models\Post::$rules);
+        
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
