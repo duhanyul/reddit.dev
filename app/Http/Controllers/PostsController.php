@@ -16,7 +16,10 @@ class PostsController extends Controller
      */
     public function index()
     {
-        return "A list of all posts";
+        $posts = \App\Models\Post::all();
+        $data['posts'] = $posts;
+
+        return view('/posts/all',$data);
     }
 
     /**
@@ -37,7 +40,15 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        return back()->withInput();
+        $post = new \App\Models\Post();
+        $post->title = $request->title;
+        $post->url = $request->url;
+        $post->content = $request->content;
+        $post->created_by = 1;
+        $post->save();
+
+
+        return redirect()->action('PostsController@index');
 
     }
 
@@ -49,7 +60,10 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        return "A particular post $id";
+        $post = \App\Models\Post::find($id);
+
+        $data['post'] = $post;
+        return view('/posts/post',$data);
     }
 
     /**
@@ -60,7 +74,10 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        return view('/posts/edit');
+        $post = \App\Models\Post::find($id);
+
+        $data['post'] = $post;
+        return view('/posts/edit',$data);
     }
 
     /**
@@ -72,7 +89,14 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return "An $request to change $id has been made";
+        $post = \App\Models\Post::find($id);
+
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->url = $request->url;
+        $post->save();
+
+        return redirect()->action('PostsController@index');
     }
 
     /**
@@ -83,6 +107,9 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        return "Goodbye $id";
+        $post = \App\Models\Post::find($id);
+        $post->delete();
+
+        return redirect()->action('PostsController@index');
     }
 }
