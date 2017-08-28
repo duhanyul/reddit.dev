@@ -26,7 +26,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return "A page to create new posts";
+        return view('/posts/create');
     }
 
     /**
@@ -37,7 +37,8 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        return "save this $request";
+        return back()->withInput();
+
     }
 
     /**
@@ -59,7 +60,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        return "A particular post to edit $id";
+        return view('/posts/edit');
     }
 
     /**
