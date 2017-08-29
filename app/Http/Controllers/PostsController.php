@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Post;
+use Log;
 
 class PostsController extends Controller
 {
@@ -16,7 +18,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = \App\Models\Post::Paginate(3);
+        $posts = Post::Paginate(3);
 
         $data['posts'] = $posts;
 
@@ -41,7 +43,7 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $post = new \App\Models\Post();
+        $post = new Post();
         $post->title = $request->title;
         $post->url = $request->url;
         $post->content = $request->content;
@@ -49,10 +51,9 @@ class PostsController extends Controller
 
         $this->validate($request,\App\Models\Post::$rules);
 
+        Log::info($post);
+
         $post->save();
-
-        dd($request);
-
 
         return redirect()->action('PostsController@index');
 
@@ -66,10 +67,13 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $post = \App\Models\Post::find($id);
 
-        $data['post'] = $post;
-        return view('/posts/post',$data);
+
+            $post = Post::findOrfail($id);
+            $data['post'] = $post;
+            return view('/posts/post',$data);
+
+
     }
 
     /**
@@ -80,7 +84,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $post = \App\Models\Post::find($id);
+        $post = Post::findOrfail($id);
 
         $data['post'] = $post;
         return view('/posts/edit',$data);
@@ -95,7 +99,7 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = \App\Models\Post::find($id);
+        $post = Post::findOrfail($id);
         $this->validate($request,\App\Models\Post::$rules);
 
         $post->title = $request->title;
@@ -114,7 +118,7 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        $post = \App\Models\Post::find($id);
+        $post = Post::findOrfail($id);
         $post->delete();
 
         return redirect()->action('PostsController@index');
