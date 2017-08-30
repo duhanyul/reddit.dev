@@ -13,18 +13,18 @@
 
 Route::get('/', 'HomeController@showWelcome');
 
-Route::get('/sayhello/{name}','HomeController@sayHello');
-
-Route::get('/uppercase/{word}','HomeController@uppercase');
-
-Route::get('/increment/{number}','HomeController@increment');
 
 Route::resource('posts', 'PostsController');
 
-Route::get('/rolldice/{guess}',function($guess){
-    $number = mt_rand(1,6);
-    $data['number'] = $number;
-    $data['guess'] = $guess;
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
-    return view('roll-dice',$data);
+// Registration routes...
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+Route::get('/logout',function(){
+    Auth::logout();
 });
